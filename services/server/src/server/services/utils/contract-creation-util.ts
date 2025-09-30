@@ -1,7 +1,4 @@
-import {
-  ContractCreationFetcher,
-  SourcifyChain,
-} from "@ethereum-sourcify/lib-sourcify";
+import { SourcifyChain } from "@ethereum-sourcify/lib-sourcify";
 import { StatusCodes } from "http-status-codes";
 import logger from "../../../common/logger";
 
@@ -24,6 +21,14 @@ const ROUTESCAN_API_URL =
   "https://api.routescan.io/v2/network/${CHAIN_TYPE}/evm/${CHAIN_ID}/etherscan?module=contract&action=getcontractcreation&contractaddresses=${ADDRESS}";
 const VECHAIN_API_URL =
   "https://api.vechainstats.com/v2/contract/info?address=${ADDRESS}&expanded=true&VCS_API_KEY=";
+
+interface ContractCreationFetcher {
+  type: "scrape" | "api";
+  url: string;
+  maskedUrl?: string;
+  responseParser?: Function;
+  scrapeRegex?: string[];
+}
 
 function getApiContractCreationFetcher(
   url: string,
